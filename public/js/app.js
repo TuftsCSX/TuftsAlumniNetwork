@@ -12,7 +12,8 @@ $(function() {
     /*
      * Prepares and returns the contents of an InfoWindow about an alumn
      * @param {Object} alumn - The Alumn to make an infowindow for
-     * @returns {HTMLNode}
+     * @returns {HTMLNode} The rendered content of an InfoBox
+     *
      */
     function prepContent(alumn) {
         var company = "";
@@ -57,6 +58,7 @@ $(function() {
      * Prepare the Marker Spiderfier for the map
      * @param {Object} map - The google map to attach the spiderfier to
      * @returns {Object} The prepared spiderfier, ready to have markers added to it.
+     *
      */
     function prepSpiderfier(map) {
         var spiderfyOptions = {
