@@ -20,7 +20,14 @@ $(function() {
     var allAlumni = null;
     var $currentlyShowing = $('#currentlyShowing');
 
+    $('#resetFilters').click(function(e) {
+        jobType = null;
+        companyName = null;
+        showAlumni(allAlumni);
+    });
+
     $.get('/api/alumni', gotAlumni);
+
     
     /*
      * Prepares and returns the contents of an InfoWindow about an alumn
