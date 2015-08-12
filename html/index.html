@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tufts CS Alumni Network</title>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
@@ -15,7 +15,8 @@
                 Tufts C.S. Network
             </a>
             <ul id="nav-mobile" class="left hide-on-med-down">
-                <li><a class="blue waves-effect waves-light btn" href="http://goo.gl/forms/mQMhbwaTSZ" target="_blank">Add Me!</a></li>
+                <!--<li><a class="blue waves-effect waves-light btn" href="http://goo.gl/forms/mQMhbwaTSZ" target="_blank">Add Me!</a></li>-->
+                <li><a class="modal-trigger blue waves-effect waves-light btn" href="#addForm">Add Me!</a></li>
                 <li>
                 </li>
             </ul>
@@ -45,7 +46,16 @@
             </div>
         </div>
     </div>
-</div>
+
+    <div id="addForm" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Add To Map</h4>
+            <p>This is me hey there</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+        </div>
+    </div>
     
 </main>
 
@@ -73,7 +83,7 @@
     </div>
 </template>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <script src="/static/js/infobox.js"></script>
 <script src="/static/js/oms.min.js"></script>

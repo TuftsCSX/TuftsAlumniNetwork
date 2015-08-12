@@ -1,7 +1,9 @@
-$(document).ready(function() {
-    $('.modal-trigger').leanModal();
-});
 $(function() {
+    $('.modal-trigger').leanModal({
+        complete: function() {
+            console.log('Finished!');
+        },    
+    });
     var mapOptions = {
         center: { lat: 42.3601, lng: -71.0589 },
         zoom: 5,

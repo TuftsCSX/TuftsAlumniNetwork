@@ -11,7 +11,7 @@ router.route('/alumni')
                 var response = alumni.filter(function(alumn) {
                         return alumn.canContact;
                 });
-                res.json(alumni);
+                res.json(response);
             }
         });
     });
