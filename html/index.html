@@ -48,13 +48,90 @@
     </div>
 
     <div id="addForm" class="modal modal-fixed-footer">
+        <form method="post" action="/newEntry">
         <div class="modal-content">
             <h4>Add To Map</h4>
-            <p>This is me hey there</p>
+            <h6>Every completed field will be shared, so nothing is mandatory</h6>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="displayName" type="text">
+                                <label for="displayName">Display Name</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="email" class="validate" type="email">
+                                <label for="email">Email Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="gradYear" class="datepicker" type="date">
+                                    <label for="gradYear">Graduation Date</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="city" type="text">
+                                    <label for="city">Post-Grad Location (City, State)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <ul class="tabs modalTabs z-depth-1">
+                                <li class="tab col s12"><a class="active" href="#industry">Industry Plans</a></li>
+                                <li class="tab col s12"><a href="#academia">Academia Plans</a></li>
+                                <li class="tab col s12"><a href="#other">Other Plans</a></li>
+                            </ul>
+                        </div>
+                        <div id="industry" class="col s12">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s6">
+                                        <input id="companyName" type="text">
+                                        <label for="companyName">Company Name</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input id="jobTitle" type="text">
+                                        <label for="jobTitle">Job Title</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="academia" class="col s12">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s12">
+                                        <input id="academiaWhere" type="text">
+                                        <label for="academiaWhere">Academic Institution</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <textarea id="academiaWhat" class="materialize-textarea"></textarea>
+                                        <label for="academiaWhat">What are you working on?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="other" class="col s12">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s12">
+                                        <textarea id="otherWhat" class="materialize-textarea"></textarea>
+                                        <label for="otherWhat">What are you working on?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit">Submit</button>
         </div>
+        </form>
     </div>
     
 </main>

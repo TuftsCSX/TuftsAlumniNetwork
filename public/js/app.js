@@ -4,6 +4,12 @@ $(function() {
             console.log('Finished!');
         },    
     });
+    $('.datepicker').pickadate({
+        selectYears: 20,
+        selectMonths: true,
+        format: 'mmmm \'yy'
+            
+    }); 
     var mapOptions = {
         center: { lat: 42.3601, lng: -71.0589 },
         zoom: 5,
