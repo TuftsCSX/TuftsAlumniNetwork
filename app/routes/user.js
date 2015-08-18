@@ -73,6 +73,20 @@ function saveEntryWithCity( user, data, city, res ) {
     });
 }
 
+function removeOldJob( oldJobID ) {
+    Alumni.findById( oldJobID, function( oldJobErr, oldJob ) {
+        if ( oldJobErr ) {
+            console.log( 'error finding old job' );
+        } else if ( Boolean( oldJob ) ) {
+            oldJob.remove( function( oldJobErr, oldJob ) {
+                if ( oldJobErr ) {
+                    console.log( 'error removing old job', oldJobErr );
+                }
+            });
+        }
+    });
+}
+
 function saveEntry( user, data, res ) {
     var alumni = new Alumni(data);
     alumni.save(function( err, newAlumni ) {
@@ -80,19 +94,9 @@ function saveEntry( user, data, res ) {
             console.log( 'Old Job: ', user.job );
             var oldJobID = user.job;
             user.job = newAlumni._id;
-            Alumni.findById( oldJobID, function( oldJobErr, oldJob ) {
-                if ( oldJobErr ) {
-                    console.log( 'error finding old job' );
-                } else if ( Boolean( oldJob ) ) {
-                    oldJob.remove( function( oldJobErr, oldJob ) {
-                        if ( oldJobErr ) {
-                            console.log( 'error removing old job', oldJobErr );
-                        }
-                    });
-                }
-            });
             user.save( function( userErr ) {
                 if ( ! userErr ) {
+                    removeOldJob( oldJobID );
                     res.sendStatus(201);
                 } else {
                     res.sendStatus(402);
