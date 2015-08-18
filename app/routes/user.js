@@ -74,6 +74,10 @@ function saveEntryWithCity( user, data, city, res ) {
 }
 
 function removeOldJob( oldJobID ) {
+    if ( ! Boolean( oldJobID ) ) {
+        /* Nothing to actually remove */
+        return;
+    }
     Alumni.findById( oldJobID, function( oldJobErr, oldJob ) {
         if ( oldJobErr ) {
             console.log( 'error finding old job' );
