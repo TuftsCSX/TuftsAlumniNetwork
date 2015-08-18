@@ -122,6 +122,9 @@ $(function() {
             if ( Boolean( alumn.companyName ) ) {
                 companies[alumn.companyName] = true;
             }
+            if ( Boolean( alumn.academiaWhere ) ) {
+                companies[alumn.academiaWhere] = true;
+            }
             addMarkerToMap(alumn);
         });
         var jobTypes = Object.keys(types);
@@ -155,7 +158,7 @@ $(function() {
         } else if ( companyName !== null ) {
             msg = 'Currently filtering for all job types at ' + companyName;
         } else if ( jobType !== null ) {
-            msg = 'Currently filtering for ' + jobType + ' at all companies';
+            msg = 'Currently filtering for ' + jobType + ' at all companies and schools';
         }
 
         $currentlyShowing.text(msg);
@@ -173,7 +176,7 @@ $(function() {
             }
 
             // If company is correct and we're not filtering by job type
-            if ( jobType === null && companyName === alumn.companyName ) {
+            if ( jobType === null && ( companyName === alumn.companyName || companyName == alumn.academiaWhere ) ) {
                 return true;
             }
 
@@ -183,7 +186,7 @@ $(function() {
             }
 
             // If both company and job type are the same
-            if ( companyName === alumn.companyName && jobType === alumnType ) {
+            if ( ( companyName === alumn.companyName || companyName == alumn.academiaWhere ) && jobType === alumnType ) {
                 return true;
             }
 
@@ -195,12 +198,13 @@ $(function() {
     }
 
     function prepFilters(jobTypes, companies) {
-        for(var i = 0; i < jobTypes.length; ++i) {
+        var i = 0;
+        for(i = 0; i < jobTypes.length; ++i) {
             var type = jobTypes[i];
             $typesFilter.append($('<li><a href="#!" class="typeFilter">' + type + '</a></li>'));
         }
 
-        for(var i = 0; i < companies.length; ++i) {
+        for(i = 0; i < companies.length; ++i) {
             var company = companies[i];
             $companyFilter.append($('<li><a href="#!" class="companyFilter">' + company + '</a></li>'));
         }
