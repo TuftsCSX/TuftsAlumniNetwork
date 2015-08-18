@@ -9,7 +9,7 @@ var User = require('./models/user');
 passport.use(new FacebookStrategy({
         clientID: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/user/facebook/callback'
+        callbackURL: '/user/facebook/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         graph.setAccessToken(accessToken);
