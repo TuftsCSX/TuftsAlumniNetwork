@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 */
 app.use(bodyParser());
-app.use(session({secret: 'dummysecret'}));
+app.use(session({secret: process.env.SESSION_SECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/static', express.static('public'));
