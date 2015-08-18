@@ -1,8 +1,11 @@
 /* App stuff */
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var app = express();
 var passport = require('passport');
+var loggedIn = require('./app/routes/loggedIn').loggedIn;
+var loggedInAPI = require('./app/routes/loggedIn').loggedInAPI;
 
 /* Database */
 var MONGO_URL = process.env.MONGOLAB_URI ||
@@ -11,20 +14,26 @@ var MONGO_URL = process.env.MONGOLAB_URI ||
 var mongoose = require('mongoose');
 mongoose.connect(MONGO_URL);
 
-/* Initialization */
-app.set('port', (process.env.PORT || 3000));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use('/static', express.static('public'));
-
 /* Auth */
 var auth = require('./app/auth');
 
+/* Initialization */
+app.set('port', (process.env.PORT || 3000));
+/*
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+*/
+app.use(bodyParser());
+app.use(session({secret: 'dummysecret'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/static', express.static('public'));
+app.use( '/api', loggedInAPI );
+
+
 /* Routes */
 var router = require('./app/index')(app);
-app.get('/', function(req, res) {
+app.get('/', loggedIn('/user/facebook'), function(req, res) {
     var options = {
         root: __dirname + '/html/'
     };

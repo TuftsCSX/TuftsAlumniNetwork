@@ -29,7 +29,7 @@
         <div class="section">
             <div class="row">
                 <div class="col s12 m4 center">
-                    <a class="dropdown-button btn" href="#" data-activates="types-dropdown">Filter by Job Type</a>
+                    <a class="dropdown-button btn" href="#" data-activates="types-dropdown">Filter by Type</a>
                 </div>
                 <div class="col s12 m4 center">
                     <a class="dropdown-button btn" href="#" data-activates="company-dropdown">Filter by Company</a>
@@ -48,7 +48,7 @@
     </div>
 
     <div id="addForm" class="modal modal-fixed-footer">
-        <form method="post" action="/newEntry">
+        <form id="newEntry" method="post" action="/user/newEntry">
         <div class="modal-content">
             <h4>Add To Map</h4>
             <h6>Every completed field will be shared, so nothing is mandatory</h6>
@@ -56,11 +56,11 @@
                     <div class="col s12">
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="displayName" type="text">
+                                <input id="displayName" name="displayName" type="text">
                                 <label for="displayName">Display Name</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="email" class="validate" type="email">
+                                <input id="email" name="email" class="validate" type="email">
                                 <label for="email">Email Address</label>
                             </div>
                         </div>
@@ -69,11 +69,11 @@
                         <div class="col s12">
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <input id="gradYear" class="datepicker" type="date">
+                                    <input id="gradYear" name="gradYear" class="datepicker" type="date">
                                     <label for="gradYear">Graduation Date</label>
                                 </div>
                                 <div class="input-field col s6">
-                                    <input id="city" type="text">
+                                    <input id="city" name="city" type="text">
                                     <label for="city">Post-Grad Location (City, State)</label>
                                 </div>
                             </div>
@@ -91,12 +91,20 @@
                             <div class="row">
                                 <div class="col s12">
                                     <div class="input-field col s6">
-                                        <input id="companyName" type="text">
+                                        <input id="companyName" type="text" name="companyName">
                                         <label for="companyName">Company Name</label>
                                     </div>
                                     <div class="input-field col s6">
-                                        <input id="jobTitle" type="text">
+                                        <input id="jobTitle" type="text" name="jobTitle">
                                         <label for="jobTitle">Job Title</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s12">
+                                        <textarea id="jobWhat" name="jobWhat" class="materialize-textarea" name="" cols="30" rows="10"></textarea>
+                                        <label for="jobWhat">What are you working on?</label>
                                     </div>
                                 </div>
                             </div>
@@ -105,11 +113,11 @@
                             <div class="row">
                                 <div class="col s12">
                                     <div class="input-field col s12">
-                                        <input id="academiaWhere" type="text">
+                                        <input id="academiaWhere" type="text" name="academiaWhere">
                                         <label for="academiaWhere">Academic Institution</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <textarea id="academiaWhat" class="materialize-textarea"></textarea>
+                                        <textarea id="academiaWhat" name="academiaWhat" class="materialize-textarea"></textarea>
                                         <label for="academiaWhat">What are you working on?</label>
                                     </div>
                                 </div>
@@ -119,7 +127,7 @@
                             <div class="row">
                                 <div class="col s12">
                                     <div class="input-field col s12">
-                                        <textarea id="otherWhat" class="materialize-textarea"></textarea>
+                                        <textarea id="otherWhat" name="otherWhat" class="materialize-textarea"></textarea>
                                         <label for="otherWhat">What are you working on?</label>
                                     </div>
                                 </div>
@@ -132,6 +140,7 @@
             <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit">Submit</button>
         </div>
         </form>
+        
     </div>
     
 </main>
@@ -150,10 +159,11 @@
         <div class="col s12 m12">
             <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                    <span class="card-title" id="name">NAME</span>
+                    <span class="card-title" id="displayName">NAME</span>
                     <p><span id="company"></span></p>
-                    <p id="type">Full Time</p>
+                    <p id="type">Industry</p>
                     <p id="contact">contact</p>
+                    <p id="doing">doing</p>
                 </div>
             </div>
         </div>
@@ -165,5 +175,16 @@
 <script src="/static/js/infobox.js"></script>
 <script src="/static/js/oms.min.js"></script>
 <script src="/static/js/app.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script>
+$(function() {
+    options = {
+        beforeSubmit: function(arr, $form, options) {
+            console.log(arr, $form);
+        }
+    }
+    $('#newEntry').ajaxForm(options);
+});
+</script>
 </body>
 </html>

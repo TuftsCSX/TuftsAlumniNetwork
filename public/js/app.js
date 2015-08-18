@@ -1,14 +1,12 @@
 $(function() {
-    $('.modal-trigger').leanModal({
-        complete: function() {
-            console.log('Finished!');
-        },    
-    });
+    $('.modal-trigger').leanModal();
     $('.datepicker').pickadate({
         selectYears: 20,
         selectMonths: true,
-        format: 'mmmm \'yy'
-            
+        format: 'mmmm \'yy',
+        hiddenName: true,
+        formatSubmit: 'mm/dd/yyyy'
+
     }); 
     var mapOptions = {
         center: { lat: 42.3601, lng: -71.0589 },
@@ -36,17 +34,10 @@ $(function() {
 
     $.get('/api/alumni', gotAlumni);
 
-    
-    /*
-     * Prepares and returns the contents of an InfoWindow about an alumn
-     * @param {Object} alumn - The Alumn to make an infowindow for
-     * @returns {HTMLNode} The rendered content of an InfoBox
-     *
-     */
-    function prepContent(alumn) {
+    function getCompanyOrSchool( alumn ) {
         var company = "";
-        if ( Boolean( alumn.company ) ) {
-            company += alumn.company;
+        if ( Boolean( alumn.companyName ) ) {
+            company += alumn.companyName;
         }
 
         if ( Boolean ( alumn.jobTitle ) ) {
@@ -56,30 +47,80 @@ $(function() {
             company += alumn.jobTitle;
         }
 
+        if ( company === '' ) {
+            company = alumn.academiaWhere;
+        }
+
+        if ( company === '' ) {
+            company = 'Other';
+        }
+        
+        return company;
+    }
+
+    function getNameAndGradYear( alumn ) {
+        var name = alumn.displayName;
+        if ( alumn.gradYear ) {
+            var gradYear = new Date(alumn.gradYear).getFullYear();
+            name += ' c/o ' + gradYear;
+        }
+
+        return name;
+    }
+
+    function getWhatAlumnIsDoing( alumn ) {
+        if ( Boolean( alumn.jobWhat ) ) {
+            return alumn.jobWhat;
+        } else if ( Boolean( alumn.academiaWhat ) ) {
+            return alumn.academiaWhat;
+        } else if ( Boolean( alumn.otherWhat ) ) {
+            return alumn.otherWhat;
+        } else {
+            return '';
+        }
+    }
+    
+    /*
+     * Prepares and returns the contents of an InfoWindow about an alumn
+     * @param {Object} alumn - The Alumn to make an infowindow for
+     * @returns {HTMLNode} The rendered content of an InfoBox
+     *
+     */
+    function prepContent(alumn) {
+
         var template = document.getElementById('infoWindow');
-        template.content.getElementById('name').textContent = alumn.name;
-        template.content.getElementById('company').textContent = company;
-        template.content.getElementById('type').textContent = alumn.type; 
-        template.content.getElementById('contact').textContent = alumn.contact;
+        template.content.getElementById('displayName').textContent = getNameAndGradYear( alumn );
+        template.content.getElementById('company').textContent = getCompanyOrSchool( alumn );
+        template.content.getElementById('type').textContent = getAlumnType( alumn ); 
+        template.content.getElementById('contact').textContent = alumn.email;
+        template.content.getElementById('doing').textContent = getWhatAlumnIsDoing( alumn );
         var rendered = document.importNode(template.content, true);
         return rendered;
     }
 
+    function getAlumnType( alumn ) {
+        if ( Boolean( alumn.companyName ) ) {
+            return 'Industry'; 
+        } else if ( Boolean ( alumn.academiaWhere ) ) {
+            return 'Academia';
+        } else {
+            return 'Other';
+        }
+    }
     /*
      * Plot of the alumni on the map, and prepare their infowindows
      * @param {Array} alumni - The alumni to plot
      *
      */
     function gotAlumni(alumni) {
+        console.log(alumni);
         allAlumni = alumni;
         var types = {};
         var companies = {};
         alumni.forEach(function renderAlumn(alumn) {
-            if ( alumn.type != undefined ) {
-                types[alumn.type] = true;
-            }
-            if (alumn.company != undefined) {
-                companies[alumn.company] = true;
+            types[ getAlumnType( alumn ) ] = true;
+            if ( Boolean( alumn.companyName ) ) {
+                companies[alumn.companyName] = true;
             }
             addMarkerToMap(alumn);
         });
@@ -88,11 +129,19 @@ $(function() {
     }
 
     function addMarkerToMap(alumn) {
+        var alumnType = getAlumnType( alumn );
+        var markerIconColor = 'yellow';
+        if ( alumnType == 'Industry' ) {
+            markerIcon = 'purple';
+        } else if ( alumnType == 'Academia' ) {
+            markerIconColor = 'green';
+        }
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(alumn.lat, alumn.lng),
             map: map,
             title: alumn.name,
-            alumn: alumn
+            alumn: alumn,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/' + markerIconColor + '-dot.png'
         });
         spiderfier.addMarker(marker);
     }
@@ -116,24 +165,26 @@ $(function() {
         spiderfier.clearMarkers();
 
         alumni.filter(function(alumn) {
+
+            var alumnType = getAlumnType( alumn );
             // If we're not currently filtering, accept all
             if ( jobType === null && companyName === null ) {
                 return true;
             }
 
             // If company is correct and we're not filtering by job type
-            if ( jobType === null && alumn.company === companyName) {
+            if ( jobType === null && companyName === alumn.companyName ) {
                 return true;
             }
 
             // If job type is correct and we're not filtering by company
-            if ( companyName === null && alumn.type === jobType ) {
+            if ( companyName === null && jobType === alumnType ) {
                 return true;
             }
 
             // If both company and job type are the same
-            if ( companyName === alumn.company && alumn.type === jobType ) {
-                return true
+            if ( companyName === alumn.companyName && jobType === alumnType ) {
+                return true;
             }
 
             return false;
@@ -189,7 +240,7 @@ $(function() {
         var spiderfyOptions = {
             keepSpiderfied: true,
             legWeight: 5,
-        }
+        };
         var preppedSpiderfier = new OverlappingMarkerSpiderfier(map, spiderfyOptions);
         preppedSpiderfier.addListener('click', function(marker, event) {
             closeInfoWindow(openWindow);

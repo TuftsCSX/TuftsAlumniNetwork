@@ -1,20 +1,34 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
+/*
+ * displayName: Text
+ * email: email
+ * gradYear: date
+ * city: text
+ * 
+ * companyName: text
+ * jobTitle: text
+ * jobWhat: text
+ *
+ * academiaWhere: text
+ * academiaWhat: text
+ *
+ * otherWhat: text
+ *
+ * */
 var AlumniSchema = new Schema({
-    name: String,
-    company: String,
-    jobTitle: String,
-    type: String,
+    displayName: String,
     email: String,
-    city: String,
+    gradYear: Date,
     lat: Number,
     lng: Number,
-    start: Date,
-    end: Date,
-    canContact: Boolean,
-    howContact: String,
-    contact: String,
+    companyName: String,
+    jobTitle: String,
+    jobWhat: String,
+    academiaWhere: String,
+    academiaWhat: String,
+    otherWhat: String
 });
 
 module.exports = mongoose.model('Alumni', AlumniSchema);
