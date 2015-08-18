@@ -5,7 +5,7 @@ var passport = require('passport');
 var form = require('express-form');
 var field = form.field;
 var request = require('request');
-var loggedIn = require('./loggedIn').loggedIn;
+var loggedInAPI = require('./loggedIn').loggedInAPI;
 
 var geocodeURI = 'https://maps.googleapis.com/maps/api/geocode/json?';
 
@@ -99,7 +99,7 @@ function saveEntry( user, data, res ) {
 }
 
 router.route( '/newEntry' )
-    .post( loggedIn, newEntryForm, function( req, res ) {
+    .post([loggedInAPI,  newEntryForm], function( req, res ) {
         if ( req.form.isValid) {
             var city = req.form.city;
             if ( Boolean( city ) ) {
