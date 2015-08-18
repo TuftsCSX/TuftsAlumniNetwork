@@ -19,10 +19,6 @@ var auth = require('./app/auth');
 
 /* Initialization */
 app.set('port', (process.env.PORT || 3000));
-/*
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-*/
 app.use(bodyParser());
 app.use(session({secret: process.env.SESSION_SECRET}));
 app.use(passport.initialize());

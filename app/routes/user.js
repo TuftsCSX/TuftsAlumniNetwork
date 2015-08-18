@@ -5,6 +5,7 @@ var passport = require('passport');
 var form = require('express-form');
 var field = form.field;
 var request = require('request');
+var loggedIn = require('./loggedIn').loggedIn;
 
 var geocodeURI = 'https://maps.googleapis.com/maps/api/geocode/json?';
 
@@ -17,24 +18,7 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/could_not_login', 
 }));
 
-
-/*
- * displayName: Text
- * email: email
- * gradYear: date
- * city: text
- * 
- * companyName: text
- * jobTitle: text
- * jobWhat: text
- *
- * academiaWhere: text
- * academiaWhat: text
- *
- * otherWhat: text
- *
- * */
-newEntryForm = form (
+var newEntryForm = form (
     /* General Fields */
    field('displayName').trim().entityEncode(),
    field('email').isEmail().entityEncode(),
@@ -68,11 +52,12 @@ function saveEntryWithCity( user, data, city, res ) {
             data.lng = locationData.lng;
             saveEntry( user, data, res);
         } else {
-            res.sendStatus(402);
+            res.sendStatus(400);
         }
     });
 }
 
+/* Search the database for a job with the id 'oldJobID' and remove it */
 function removeOldJob( oldJobID ) {
     if ( ! Boolean( oldJobID ) ) {
         /* Nothing to actually remove */
@@ -91,6 +76,7 @@ function removeOldJob( oldJobID ) {
     });
 }
 
+/* Create a new entry with the data 'data', and attach it to the user 'user' */
 function saveEntry( user, data, res ) {
     var alumni = new Alumni(data);
     alumni.save(function( err, newAlumni ) {
@@ -103,17 +89,17 @@ function saveEntry( user, data, res ) {
                     removeOldJob( oldJobID );
                     res.sendStatus(201);
                 } else {
-                    res.sendStatus(402);
+                    res.sendStatus(400);
                 }
             });
         } else {
-            res.sendStatus(402);
+            res.sendStatus(400);
         }
     });
 }
 
 router.route( '/newEntry' )
-    .post( newEntryForm, function( req, res ) {
+    .post( loggedIn, newEntryForm, function( req, res ) {
         if ( req.form.isValid) {
             var city = req.form.city;
             if ( Boolean( city ) ) {
@@ -122,7 +108,7 @@ router.route( '/newEntry' )
                 saveEntry( req.user, req.form, res );
             }
         } else {
-            res.sendStatus(402);
+            res.sendStatus(400);
         }
     });
 

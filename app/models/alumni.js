@@ -1,22 +1,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
-/*
- * displayName: Text
- * email: email
- * gradYear: date
- * city: text
- * 
- * companyName: text
- * jobTitle: text
- * jobWhat: text
- *
- * academiaWhere: text
- * academiaWhat: text
- *
- * otherWhat: text
- *
- * */
+/* A schema to represent what an Alumni is up to now */
 var AlumniSchema = new Schema({
     displayName: String,
     email: String,

@@ -17,17 +17,4 @@ router.route('/alumni')
         });
     });
 
-/*
-router.route('/alumni/:alumni_id')
-    .get( loggedIn( '/user/facebook' ), function(req, res) {
-        Alumni.findById(req.params.alumni_id, function(err, alumn) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(alumn);
-            }
-        });
-    });
-*/
-
 module.exports = router;
