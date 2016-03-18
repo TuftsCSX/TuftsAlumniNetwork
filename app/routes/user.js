@@ -18,6 +18,9 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/could_not_login', 
 }));
 
+/**
+ * A form to validate user input with
+ */
 var newEntryForm = form (
     /* General Fields */
    field('displayName').trim().entityEncode(),
@@ -38,6 +41,10 @@ var newEntryForm = form (
    field('otherWhat').trim().entityEncode()
 );
 
+/**
+ * Get a lat/lng pair for the city that the user specified
+ * their job was in. Once you have it, proceed to save the user
+ */
 function saveEntryWithCity( user, data, city, res ) {
     var requestOptions = {
         uri: geocodeURI,
@@ -76,7 +83,11 @@ function removeOldJob( oldJobID ) {
     });
 }
 
-/* Create a new entry with the data 'data', and attach it to the user 'user' */
+/**
+ * Create a new entry with the data 'data', and attach it to the user 'user' 
+ * Users are only allowed to have one job at a time, so if an old job 
+ * is found when adding the new one, remove the old one.
+ */
 function saveEntry( user, data, res ) {
     var alumni = new Alumni(data);
     alumni.save(function( err, newAlumni ) {
